@@ -52,10 +52,23 @@ client.on('messageCreate', async message => {
     let messageChannelLog = messageGuildLog.channels.find(log => log.channel_id === channel_id)
     messageChannelLog.messages.push(formattedMessage)
 
-    const response = await generateReply("GROQ", messageChannelLog.messages, "Only Reply if the last message in the log contains a swear word! Only reply with ONE EMOJI.")
+    const prompt = `ONLY REPLY WITH TEXT IF SOMEONE IS TALKING TO YOU. DO NOT SPEAK
+         IN MORE THAN ONE SENTENCE. If the last message in the log contains a swear word, 
+        reply with a sarcastic angry emoji, but Only reply with ONE EMOJI. 
+        IF SOMEONE IS TALKING TO YOU RESPECTFULLY, KEEP THE CONVERSATION SHORT AND ONLY A ONE SENTENCE LONG. 
+        TALK LIKE A DISCORD USER OR A 17 YEAR OLD, USE SLANG, DO NOT USE PUNCTUATION MARKS EXCEPT PERIODT AND QUESTION MARK WHEN NEEDED AND EVEN THEN, USE THEM RARELY. 
+        Reply in all lowercase. 
+        ONLY REPLY WHEN SOMEONE IS TALKING TO YOU, YOUR NAME IS 'CRY OF PEAR'.
+        REPLY WITH MINOR RAGEBAIT BUT NOTHING TOO DETAILED OR NERDY.`
+    const response = await generateReply("GROQ", messageChannelLog.messages, prompt)
 
     if(response) {
-        message.react(response)
+        // console.log(response)
+        if (response.length == 1) {
+            message.react(response)
+        } else {
+            message.channel.send(response)
+        }
     }
 
 })
