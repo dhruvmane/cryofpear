@@ -4,11 +4,11 @@ function formatDateTime() {
   const now = new Date();
 
   // Time components
-  let hours = now.getHours();
+  let hours = now.getHours().toString();
   const minutes = now.getMinutes().toString().padStart(2, '0');
   const seconds = now.getSeconds().toString().padStart(2, '0');
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = (hours % 12 || 12).toString().padStart(2, '0');
+  const ampm = parseInt(hours) >= 12 ? 'PM' : 'AM';
+  hours = (parseInt(hours) % 12 || 12).toString().padStart(2, '0');
 
   // Date components
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
